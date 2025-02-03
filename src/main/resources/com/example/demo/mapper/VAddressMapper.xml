@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.demo.mapper.VAddressMapper">
+
+	<resultMap type="com.example.demo.entity.VAddress" id="vAddressMap">
+		<result column="PREFECTURE_CD" 			jdbcType="CHAR" 	property="prefectureCd" />
+		<result column="PREFECTURE_NAME" 		jdbcType="VARCHAR"  property="prefectureName" />
+		<result column="PREFECTURE_NAME_KANA" 	jdbcType="VARCHAR"  property="prefectureNameKana" />
+		<result column="CITY_CD" jdbcType="CHAR" property="cityCd" />
+		<result column="CITY_NAME" jdbcType="VARCHAR" property="cityName" />
+		<result column="CITY_NAME_KANA" jdbcType="VARCHAR" property="cityNameKana" />
+	</resultMap>
+	
+	<select id="findByPrefectureName" resultMap="vAddressMap" parameterType="String">
+		SELECT
+			*
+		FROM
+			V_ADDRESS
+		WHERE
+			PREFECTURE_NAME = #{prefectureName}
+	</select>
+
+</mapper>
