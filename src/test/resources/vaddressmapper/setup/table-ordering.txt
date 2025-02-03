@@ -1,0 +1,2 @@
+education.M_PREFECTURE
+education.M_CITY

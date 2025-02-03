@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/SpringBoot.css}" rel="stylesheet" type="text/css">
+    <title>情報引き継ぎ画面</title>
+</head>
+<body>
+    <div id="container">
+        <h1 id="page-header">情報引き継ぎ画面</h1>
+        <form th:action="@{/commit}" th:object="${user}" method="post">
+
+            <h2>入力画面から引き継いだ情報を表示する。</h2>
+            <!-- th:inline="text" タグ内で th:text を省略でき、 [[${変数}]] で取得できる -->
+            <span th:inline="text">
+                個人番号:[[${user.no}]]<br>
+                氏名:[[${user.name}]]<br>
+                誕生日:[[${user.birthday}]]<br>
+                年齢:[[${user.age}]]<br>
+                住所:[[${user.userAddress.prefecture}]][[${user.userAddress.city}]]<th:block th:if="!${#lists.isEmpty(user.userAddress.addressLine)}">[[${user.userAddress.addressLine[0]}]][[${user.userAddress.addressLine[1]}]][[${user.userAddress.addressLine[2]}]]</th:block>
+            </span>
+            <h2>住所をループ処理</h2>
+            <h3>HTMLタグに埋め込むケース</h3>
+            <!-- th:block HTMLタグとして出力はされない ループ文やif文を埋め込む -->
+            <th:block th:each="userAddress : ${user.userAddress.addressLine}">
+                <label th:text="${userAddress}">
+            </th:block>
+
+            <h3>生の値を出力するケース</h3>
+            <th:block th:each="userAddress : ${user.userAddress.addressLine}">
+                [[${userAddress}]]
+            </th:block>
+            <br>
+
+            <!-- 入力画面に戻る際に使用 -->
+            <input type="hidden" th:field="*{no}" value="${user.no}"/>
+            <input type="hidden" th:field="*{no}" value="${user.no}" />
+			<input type="hidden" th:field="*{name}" value="${user.name}" />
+			<input type="hidden" th:field="*{birthday}" value="${user.birthday}" />
+			<input type="hidden" th:field="*{age}" value="${user.age}" />
+            <input type="hidden" th:field="*{userAddress.prefecture}" value="${user.userAddress.prefecture}"/>
+            <input type="hidden" th:field="*{userAddress.city}" value="${user.userAddress.city}"/>
+            <!-- Listの場合はそのまま保持可能 -->
+            <input type="hidden" th:field="*{userAddress.addressLine}" value="${user.userAddress.addressLine}" />
+
+            <!-- name属性の値によりControllerに処理を割り当てる -->
+            <input type="submit" name="back" style="float: left;" value="入力画面に戻る">
+            <input type="submit" name="commit" style="float: right;" value="完了">
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- スタイルシート読込み
+         スタイルシートはstaticフォルダをルートに読込む -->
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/css/SpringBoot.css}"/>
+    <title>ユーザー情報入力</title>
+</head>
+<body>
+	<!-- コンテキストパスの取得 -->
+    <span th:href="@{/}" id="contextPath" style="display: none;"></span>
+    <div id="container">
+        <h1 id="page-header">SpringBoot + MVC + MyBatisのサンプルアプリケーション</h1>
+        下の表に、次のページに引き継ぐ情報を入力します。
+        <!-- "th:object" オブジェクトを指定 -->
+        <form th:action="@{/form}" th:object="${user}" method="post"> 
+            <table>
+                <tr>
+                    <th>入力項目</th>
+                    <th colspan="2">入力値</th>
+                </tr>
+                <tr>
+                    <!-- "th:field" 指定したオブジェクトに値を追加してくれる(?) Userオブジェクト.no -->
+                    <td>個人番号</td>
+                    <td colspan="2"><input type="text" th:field="*{no}" readonly></td>
+                </tr>
+                <tr>
+                    <td>氏名</td>
+                    <td colspan="2"><input type="text" th:field="*{name}"></td>
+                </tr>
+                <tr>
+                    <td>誕生日</td>
+                    <td colspan="2"><input type="text" th:field="*{birthday}"></td>
+                </tr>
+                <tr>
+                    <td>年齢</td>
+                    <td colspan="2"><input type="text" th:field="*{age}"></td>
+                </tr>
+                <tr>
+                    <th rowspan="5">住所</th>
+                    <td>都道府県</td>
+                    <td><input type="text" id="prefecture" th:field="*{userAddress.prefecture}"></td>
+                </tr>
+                <tr>
+                    <td>市区町村</td>
+                    <td><input type="text" th:field="*{userAddress.city}"></td>
+                </tr>
+                <tr>
+					<td>住所1</td>
+					<!-- コレクションの場合は変数名を指定するだけで勝手にaddしてくれる -->
+                    <!-- <td><input type="text" th:field="*{userAddress.addressLine}"></td> -->
+					<td><input type="text" th:field="*{userAddress.addressLine[0]}"></td>
+				</tr>
+				<tr>
+					<td>住所2</td>
+                    <!-- <td><input type="text" th:field="*{userAddress.addressLine}"></td> -->
+					<td><input type="text" th:field="*{userAddress.addressLine[1]}"></td>
+				</tr>
+				<tr>
+                    <!-- インデックスで指定して取得も可能 -->
+					<td>住所3</td>
+					<td><input type="text" th:field="*{userAddress.addressLine[2]}"></td>
+                </tr>
+                <button style="float: right;">送信</button>
+            </table>
+        </form>
+       <div id="result"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script th:src="@{/js/sample.js}"></script>
+</body>
+</html>
