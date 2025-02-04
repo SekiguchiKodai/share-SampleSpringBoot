@@ -22,7 +22,7 @@ public class AddressController {
 	public AddressController(AddressService addressService) {
 		this.addressService = addressService;
 	}
-	
+	// koment
 	@GetMapping("/cityList")
 	@ResponseBody
 	private String cityList(@RequestParam String prefectureName) throws JsonProcessingException, InterruptedException {
