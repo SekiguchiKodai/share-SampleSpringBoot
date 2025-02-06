@@ -15,7 +15,7 @@ import com.example.demo.service.UserService;
 
 @Controller
 public class FinishController {
-	
+	// pull merge
 	private final UserService userService;
 	
 	/** コンストラクタインジェクション コンストラクタが1つの場合はアノテーションの省略が可能 */
@@ -23,7 +23,7 @@ public class FinishController {
 	public FinishController(UserService userService) {
 		this.userService = userService;
 	}
-	// hogehoge
+	
 	// submitのname属性により使用するコントローラーを割り当てる
 	@PostMapping(value = "/commit", params = "commit") //  name属性 = params 
 	private String commit(@ModelAttribute User user, Model model) throws ParseException {
