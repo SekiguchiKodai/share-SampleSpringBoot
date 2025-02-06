@@ -17,7 +17,7 @@ import com.example.demo.service.UserService;
 public class FinishController {
 	
 	private final UserService userService;
-	
+	// fugafuga
 	/** コンストラクタインジェクション コンストラクタが1つの場合はアノテーションの省略が可能 */
 	@Autowired
 	public FinishController(UserService userService) {
