@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.SampleSpringBootApplication;
 import com.example.demo.dbunit.CsvDataSetLoader;
 import com.example.demo.entity.UserTable;
-import com.example.demo.mapper.UserMapper;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
@@ -43,14 +42,14 @@ public class UserMapperTest {
 	}
 	
 	@Test
-	@DatabaseSetup(value = "/usermapper/setup/")
+	@DatabaseSetup(value = "/com/example/demo/mapper/usermapper/setup/")
 	public void findMaxNoメソッドで最大Noを取得() {
 		int maxUserNo = userMapper.findMaxNo();
 		assertThat(maxUserNo).isEqualTo(3);
 	}
 	
 	@Test
-	@DatabaseSetup(value = "/usermapper/setup/")
+	@DatabaseSetup(value = "/com/example/demo/mapper/usermapper/setup/")
 	public void findByNoメソッドでユーザー情報を取得() throws ParseException {
 		UserTable expected = new UserTable();
 		expected.setNo(1L);
@@ -68,8 +67,8 @@ public class UserMapperTest {
 	}
 	
 	@Test
-	@DatabaseSetup(value = "/usermapper/setup/")
-	@ExpectedDatabase(value = "/usermapper/insert/", assertionMode = DatabaseAssertionMode.NON_STRICT)
+	@DatabaseSetup(value = "/com/example/demo/mapper/usermapper/setup/")
+	@ExpectedDatabase(value = "/com/example/demo/mapper/usermapper/insert/", assertionMode = DatabaseAssertionMode.NON_STRICT)
 	public void insertメソッドを実行() throws ParseException {
 		UserTable expected = new UserTable();
 		expected.setNo(4L);
