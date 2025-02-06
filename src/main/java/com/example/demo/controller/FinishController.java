@@ -15,7 +15,7 @@ import com.example.demo.service.UserService;
 
 @Controller
 public class FinishController {
-	// pull merge
+	// fuga
 	private final UserService userService;
 	
 	/** コンストラクタインジェクション コンストラクタが1つの場合はアノテーションの省略が可能 */
