@@ -64,7 +64,7 @@ public class HomeControllerTest {
 	}
 	
 	@Test
-	@DatabaseSetup("/homecontroller/setup/")
+	@DatabaseSetup("/com/example/demo/controller/homecontroller/setup/")
 	public void formPost処理_正常_画面がconfirmに遷移する() throws Exception {
 		User user = new User();
 		user.setNo(4);
@@ -85,7 +85,7 @@ public class HomeControllerTest {
 	}
 	
 	@Test
-	@DatabaseSetup("/homecontroller/setup/")
+	@DatabaseSetup("/com/example/demo/controller/homecontroller/setup/")
 	public void formPost処理_年齢欄に0未満の入力_画面がirregularに遷移する() throws Exception {
 		User user = new User();
 		user.setNo(4);

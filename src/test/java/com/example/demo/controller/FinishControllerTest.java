@@ -46,8 +46,8 @@ public class FinishControllerTest {
 	}
 
 	@Test
-	@DatabaseSetup(value = "/finishcontroller/setup/")
-	@ExpectedDatabase(value = "/finishcontroller/commit/", assertionMode = DatabaseAssertionMode.NON_STRICT)
+	@DatabaseSetup(value = "/com/example/demo/controller/finishcontroller/setup/")
+	@ExpectedDatabase(value = "/com/example/demo/controller/finishcontroller/commit/", assertionMode = DatabaseAssertionMode.NON_STRICT)
 	public void commitPost_確定_ユーザ情報がDBに登録されfinish画面に遷移する() throws Exception {
 		User user = new User();
 		user.setNo(4);
@@ -61,7 +61,7 @@ public class FinishControllerTest {
 	}
 	
 	@Test
-	@DatabaseSetup(value = "/finishcontroller/setup/")
+	@DatabaseSetup(value = "/com/example/demo/controller/finishcontroller/setup/")
 	public void commitPost_入力画面に戻る_form画面にリダイレクトで遷移してUserオブジェクトをViewに渡す() throws Exception {
 		User user = new User();
 		user.setNo(4);

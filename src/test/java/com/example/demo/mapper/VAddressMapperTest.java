@@ -38,7 +38,7 @@ public class VAddressMapperTest {
 	}
 	
 	@Test
-	@DatabaseSetup(value = "/vaddressmapper/setup/")
+	@DatabaseSetup(value = "/com/example/demo/mapper/vaddressmapper/setup/")
 	public void findByPrefectureメソッドを実行して市区町村情報を取得() {
 		List<String> expectedCities = Arrays.asList("京都市北区","京都市上京区", "京都市左京区","京都市右京区");
 		
