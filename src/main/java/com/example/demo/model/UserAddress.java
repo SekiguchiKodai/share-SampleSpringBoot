@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
+import lombok.Generated;
 
 /**
  * <h1>[住所]</h1><br>
@@ -11,6 +12,7 @@ import lombok.Data;
  * 住所を持つ。
  */
 @Data
+@Generated
 public class UserAddress {
 	/** 都道府県 */
 	private String prefecture;
