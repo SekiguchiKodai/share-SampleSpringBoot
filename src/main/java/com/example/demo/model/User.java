@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Generated;
 
 /**
  * <h1>[ユーザー情報]</h1><br>
@@ -9,6 +10,7 @@ import lombok.EqualsAndHashCode;
  *  USERの情報を持つ。
  */
 @Data								// Lombokのアノテーション Getter Setter の自動生成を行う。
+@Generated
 @EqualsAndHashCode(callSuper=true)	// @Dataアノテーションが付与されたクラスを継承した場合に明示する必要がある。
 public class User extends ViewCommonData {
 	

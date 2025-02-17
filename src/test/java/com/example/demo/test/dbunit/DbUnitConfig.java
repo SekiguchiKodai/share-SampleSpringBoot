@@ -1,4 +1,4 @@
-package com.example.demo.dbunit;
+package com.example.demo.test.dbunit;
 
 import javax.sql.DataSource;
 

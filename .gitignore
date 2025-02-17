@@ -32,6 +32,9 @@ application-pro.properties
 *.jar
 *.war
 
+### JUnit evidence file  ###
+src/test/resources/**/*_result.txt
+
 ### IntelliJ IDEA ###
 .idea
 *.iws

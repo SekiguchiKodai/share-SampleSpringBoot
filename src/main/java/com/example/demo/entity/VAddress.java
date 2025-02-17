@@ -1,8 +1,10 @@
 package com.example.demo.entity;
 
 import lombok.Data;
+import lombok.Generated;
 
 @Data
+@Generated
 public class VAddress {
 	
 	/** 都道府県コード */
