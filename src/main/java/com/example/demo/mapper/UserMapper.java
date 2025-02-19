@@ -13,18 +13,24 @@ import com.example.demo.entity.UserTable;
 public interface UserMapper {
 	
 	/**
-	 * SELECT ONE USER
+	 * find max user no
+	 * @return
+	 */
+	public int findMaxNo();
+	
+	/**
+	 * find one user
 	 * @param no
 	 * @return
 	 */
 	public UserTable findByNo(long no);
 	
 	/**
-	 * INSERT
+	 * insert user
 	 * @param user
 	 * @return
 	 */
 	public int insert(UserTable ut);
 	
-	public int findMaxNo();
+	
 }

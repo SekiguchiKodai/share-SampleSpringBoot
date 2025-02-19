@@ -26,7 +26,7 @@ public class UserMapperTest extends AbstractMapperTest {
 	}
 	
 	@Test
-	@DisplayName("010101_findMaxNo_正常_ユーザNoの最大値を取得")
+	@DisplayName("R010101_findMaxNo_正常_ユーザNoの最大値を取得")
 	@DatabaseSetup(value = "/com/example/demo/mapper/usermapper/db/setup/")
 	public void findMaxNoメソッドで最大Noを取得() throws IOException {
 		int expected = 3;
@@ -47,7 +47,7 @@ public class UserMapperTest extends AbstractMapperTest {
 	}
 	
 	@Test
-	@DisplayName("020101_findByNo_正常_ユーザー情報を取得")
+	@DisplayName("R020101_findByNo_正常_ユーザー情報を取得")
 	@DatabaseSetup(value = "/com/example/demo/mapper/usermapper/db/setup/")
 	public void findByNoメソッドでユーザー情報を取得() throws ParseException, IOException {
 		UserTable expected = new UserTable();
@@ -77,7 +77,7 @@ public class UserMapperTest extends AbstractMapperTest {
 	}
 	
 	@Test
-	@DisplayName("030101_insert_正常_ユーザー情報を登録")
+	@DisplayName("C010101_insert_正常_ユーザー情報を登録")
 	@DatabaseSetup(value = "/com/example/demo/mapper/usermapper/db/setup/")
 	@ExpectedDatabase(value = "/com/example/demo/mapper/usermapper/db/insert/", assertionMode = DatabaseAssertionMode.NON_STRICT)
 	public void insertメソッドを実行() throws ParseException {

@@ -19,6 +19,15 @@
 	</resultMap>
 
 	<!-- SQL定義 -->
+	
+	<!-- id=Mapperクラスのメソッド名 resultType=戻り値の型 -->
+	<select id="findMaxNo" resultType="int">
+		SELECT
+			COALESCE(MAX(NO), 0)
+		FROM
+			USER_TABLE
+	</select>
+	
 	<!-- id=Mapperクラスのメソッド名 resultMap=上記で指定したid parameterType=クエリパラメータの型 -->
 	<select id="findByNo" resultMap="userMap" parameterType="long">
 		SELECT
@@ -44,12 +53,5 @@
 			FROM
 				USER_TABLE
 	</insert>
-	
-	<select id="findMaxNo" resultType="int">
-		SELECT
-			COALESCE(MAX(NO), 0)
-		FROM
-			USER_TABLE
-	</select>
 	
 </mapper>
