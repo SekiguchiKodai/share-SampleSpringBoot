@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.UserTable;
 import com.example.demo.model.User;
@@ -28,12 +29,15 @@ public class UserService {
 		return userRepository.findByNo(no);
 	}
 	
-	public int insert(User user) throws ParseException {
+	@Transactional
+	public UserTable regist(User user) throws ParseException {
 		UserTable ut = new UserTable();
 		ut.setNo(user.getNo());
 		ut.setName(user.getName());
 		ut.setBirthday(new Date(new SimpleDateFormat("yyyy/MM/dd").parse(user.getBirthday()).getTime()));
 		ut.setAge(user.getAge());
-		return userRepository.insert(ut);
+		userRepository.insert(ut);
+		
+		return userRepository.findByNo(ut.getNo());
 	}
 }

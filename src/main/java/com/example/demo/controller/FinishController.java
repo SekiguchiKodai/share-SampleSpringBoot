@@ -28,11 +28,8 @@ public class FinishController {
 	@PostMapping(value = "/commit", params = "commit") //  name属性 = params 
 	private String commit(@ModelAttribute User user, Model model) throws ParseException {
 		
-		// SQLインサート実行
-		userService.insert(user);
-		
-		// SQLセレクト実行
-		UserTable record = userService.findByNo(user.getNo());
+		// ユーザ登録
+		UserTable record = userService.regist(user);
 		
 		model.addAttribute("userTable", record);
 		
