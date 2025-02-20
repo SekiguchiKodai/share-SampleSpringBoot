@@ -25,12 +25,8 @@ public class UserService {
 		return maxNo + 1;
 	}
 	
-	public UserTable findByNo(Long no) {
-		return userRepository.findByNo(no);
-	}
-	
 	@Transactional
-	public UserTable regist(User user) throws ParseException {
+	public UserTable register(User user) throws ParseException {
 		UserTable ut = new UserTable();
 		ut.setNo(user.getNo());
 		ut.setName(user.getName());
