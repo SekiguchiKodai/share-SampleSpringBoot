@@ -29,7 +29,7 @@ public class FinishController {
 	private String commit(@ModelAttribute User user, Model model) throws ParseException {
 		
 		// ユーザ登録
-		UserTable record = userService.regist(user);
+		UserTable record = userService.register(user);
 		
 		model.addAttribute("userTable", record);
 		
