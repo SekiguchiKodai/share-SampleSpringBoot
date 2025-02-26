@@ -4,9 +4,11 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.common.exception.DatabaseRegisterUserException;
 import com.example.demo.entity.UserTable;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
@@ -27,13 +29,21 @@ public class UserService {
 	
 	@Transactional
 	public UserTable register(User user) throws ParseException {
-		UserTable ut = new UserTable();
-		ut.setNo(user.getNo());
-		ut.setName(user.getName());
-		ut.setBirthday(new Date(new SimpleDateFormat("yyyy/MM/dd").parse(user.getBirthday()).getTime()));
-		ut.setAge(user.getAge());
-		userRepository.insert(ut);
+		UserTable newUT = new UserTable();
+		newUT.setNo(user.getNo());
+		newUT.setName(user.getName());
+		newUT.setBirthday(new Date(new SimpleDateFormat("yyyy/MM/dd").parse(user.getBirthday()).getTime()));
+		newUT.setAge(user.getAge());
 		
-		return userRepository.findByNo(ut.getNo());
+		UserTable registeredUT = null;
+		try {
+			// 登録・登録情報の取得
+			userRepository.insert(newUT);
+			registeredUT = userRepository.findByNo(newUT.getNo());
+		} catch (DataAccessException e) {
+			throw new DatabaseRegisterUserException("ユーザ登録時に不具合が発生", e);
+		}
+		
+		return registeredUT;
 	}
 }
