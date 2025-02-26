@@ -16,10 +16,24 @@ import org.junit.jupiter.api.TestInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.SampleSpringBootApplication;
+import com.example.demo.test.dbunit.CsvDataSetLoader;
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
+@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
+@TestExecutionListeners({
+	DependencyInjectionTestExecutionListener.class,
+	TransactionalTestExecutionListener.class,
+	DbUnitTestExecutionListener.class
+})
+@Transactional
 @SpringBootTest(classes = SampleSpringBootApplication.class, webEnvironment = WebEnvironment.NONE)
 public abstract class BaseServiceTest {
 	
@@ -73,7 +87,8 @@ public abstract class BaseServiceTest {
 		}
 		
 		// エビデンスファイルの初期化
-		String fileName   = nestedClassName + "_" + info.getDisplayName() + "_result.txt";
+		String methodName = info.getTestMethod().get().getName();
+		String fileName   = methodName + "_" + info.getDisplayName() + "_result.txt";
 		Path outFilePath = outDirPath.resolve(fileName);
 		fileWriter = Files.newBufferedWriter(outFilePath, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 	}
