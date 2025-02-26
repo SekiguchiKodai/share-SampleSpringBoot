@@ -15,7 +15,7 @@ public class ExceptionController {
 	}
 	
 	@ExceptionHandler(exception = Exception.class)
-	public String handleDatabaseRegisterUserException(Exception exceprion) {
+	public String handleException(Exception exceprion) {
 		System.out.println(exceprion.getMessage());
 		return "error_system";
 	}
