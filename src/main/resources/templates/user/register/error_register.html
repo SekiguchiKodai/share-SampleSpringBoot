@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/SpringBoot.css}" rel="stylesheet" type="text/css">
+    <title>登録エラー</title>
+</head>
+<body>
+    <div id="container">
+        <h1 id="page-header">登録エラー</h1>
+        ユーザ情報の登録に失敗しました。
+        
+        <form th:action="@{/form}" method="get">
+            <button style="float: right;">再登録</button>
+        </form>
+    </div>
+</body>
+</html>
