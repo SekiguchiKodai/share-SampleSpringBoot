@@ -86,7 +86,8 @@ public class BaseRepositoryTest {
 		}
 		
 		// エビデンスファイルの初期化
-		String fileName   = nestedClassName + "_" + info.getDisplayName() + "_result.txt";
+		String methodName = info.getTestMethod().get().getName();
+		String fileName   = methodName + "_" + info.getDisplayName() + "_result.txt";
 		Path outFilePath = outDirPath.resolve(fileName);
 		fileWriter = Files.newBufferedWriter(outFilePath, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 	}
