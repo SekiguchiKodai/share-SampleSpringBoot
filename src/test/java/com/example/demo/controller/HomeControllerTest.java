@@ -35,7 +35,7 @@ import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 	DbUnitTestExecutionListener.class
 })
 @Transactional
-public class HomeControllerTest extends AbstractControllerTest {
+public class HomeControllerTest extends BaseControllerTest {
 
 	@Autowired
 	public HomeControllerTest(MockMvc mockMvc) {

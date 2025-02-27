@@ -37,7 +37,7 @@ import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 	DbUnitTestExecutionListener.class
 })
 @Transactional
-public class FinishControllerTest extends AbstractControllerTest {
+public class FinishControllerTest extends BaseControllerTest {
 	
 	@Autowired
 	public FinishControllerTest(MockMvc mockMvc) {

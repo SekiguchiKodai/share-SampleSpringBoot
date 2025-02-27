@@ -23,18 +23,21 @@ import com.example.demo.SampleSpringBootApplication;
 @TestMethodOrder(MethodOrderer.DisplayName.class)
 @AutoConfigureMockMvc
 @SpringBootTest(classes = SampleSpringBootApplication.class)
-public abstract class AbstractControllerTest {
+public abstract class BaseControllerTest {
 
 	/** MockMvc */
 	protected final MockMvc mockMvc;
 	
 	/** テスト用リソースのパス */
-	protected static Path resourcesPath;
+	protected static Path resourcesDirPath;
+	
+	/** テストエビデンスのパス */
+	protected static Path evidenceDirPath;
 	
 	/** テスト結果出力用ストリーム */
 	protected BufferedWriter fileWriter;
 	
-	public AbstractControllerTest(MockMvc mockMvc) {
+	public BaseControllerTest(MockMvc mockMvc) {
 		this.mockMvc = mockMvc;
 	}
 	
@@ -42,16 +45,26 @@ public abstract class AbstractControllerTest {
 	 * テストリソースが存在するディレクトリまでのパスを取得
 	 * @param commonPath 共通パス
 	 * @param middlePath 共通パスから後ろのパス
+	 * @throws IOException 
 	 */
 	@BeforeAll
 	public static void beforeAll(
 			@Value("${test.resources.path.common}") String commonPath,
 			@Value("${test.resources.path.controller}") String middlePath,
-			TestInfo info) {
+			TestInfo info) throws IOException {
 		
 		String className = info.getTestClass().get().getSimpleName();
 		String lowerTargetClassName = className.replace("Test", "").toLowerCase();
-		resourcesPath = Path.of("").toAbsolutePath().resolve(Path.of(commonPath, middlePath, lowerTargetClassName));
+		resourcesDirPath = Path.of("").toAbsolutePath().resolve(Path.of(commonPath, middlePath, lowerTargetClassName));
+		
+		if (Files.notExists(resourcesDirPath)) {
+			Files.createDirectory(resourcesDirPath);
+		}
+		
+		evidenceDirPath = resourcesDirPath.resolve("evidence");
+		if (Files.notExists(evidenceDirPath)) {
+			Files.createDirectory(evidenceDirPath);
+		}
 	}
 	
 	/**
@@ -61,13 +74,18 @@ public abstract class AbstractControllerTest {
 	 */
 	@BeforeEach
 	public void beforeEach(TestInfo info) throws IOException {
-		Path outDirPath = resourcesPath.resolve(Path.of(info.getDisplayName())); 
-		Path outFullPath = outDirPath.resolve(Path.of(info.getDisplayName()+"_result.txt"));
-		// テスト単位でディレクトリ作成
+		// テスト対象のクラスのメソッド毎にディレクトリを用意
+		String nestedClassName   = info.getTestClass().get().getSimpleName().replaceAll("^_", "");
+		Path outDirPath = evidenceDirPath.resolve(nestedClassName);
 		if (Files.notExists(outDirPath)) {
 			Files.createDirectory(outDirPath);
 		}
-		fileWriter = Files.newBufferedWriter(outFullPath, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+		
+		// エビデンスファイルの初期化
+		String methodName = info.getTestMethod().get().getName().replaceAll("^_", "");
+		String fileName   = methodName + "_" + info.getDisplayName() + "_result.txt";
+		Path outFilePath = outDirPath.resolve(fileName);
+		fileWriter = Files.newBufferedWriter(outFilePath, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 	}
 	
 	/**
@@ -81,5 +99,4 @@ public abstract class AbstractControllerTest {
 			fileWriter.close();
 		}
 	}
-	
 }
