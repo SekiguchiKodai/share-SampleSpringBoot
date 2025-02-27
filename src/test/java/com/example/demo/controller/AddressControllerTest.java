@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.example.demo.entity.VAddress;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class AddressControllerTest extends AbstractControllerTest {
+public class AddressControllerTest extends BaseControllerTest {
 	
 	@Autowired
 	public AddressControllerTest(MockMvc mockMvc) {
