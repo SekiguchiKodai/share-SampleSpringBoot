@@ -9,6 +9,8 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,6 @@ import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 
-@TestMethodOrder(MethodOrderer.DisplayName.class)
-@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	TransactionalTestExecutionListener.class,
@@ -44,50 +44,65 @@ public class FinishControllerTest extends BaseControllerTest {
 		super(mockMvc);
 	}
 
-	@Test
-	@DisplayName("P010101_POST_commit-commit_正常_ユーザ情報がDBに登録されて画面がfinishに遷移")
-	@DatabaseSetup(value = "/com/example/demo/controller/finishcontroller/db/setup/")
-	@ExpectedDatabase(value = "/com/example/demo/controller/finishcontroller/db/commit/education.USER_TABLE.csv", assertionMode = DatabaseAssertionMode.NON_STRICT)
-	public void POST_commit_正常_ユーザ情報がDBに登録されて画面がfinishに遷移() throws Exception {
-		User user = new User();
-		user.setNo(4);
-		user.setName("test4");
-		user.setAge(40);
-		user.setBirthday("1985/01/01");
+	@Nested
+	@Order(1)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
+	@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
+	class _P0101_commit {
 		
-		mockMvc.perform(post("/commit").param("commit", "commit").flashAttr("user", user))
-			   .andDo(print(fileWriter))
-			   .andExpect(status().isOk())
-			   .andExpect(view().name("user/register/finish"));
+		@Test
+		@DisplayName("正常_ユーザ情報がDBに登録されて画面がfinishに遷移")
+		@DatabaseSetup(value = "/com/example/demo/controller/finishcontroller/db/setup/")
+		@ExpectedDatabase(value = "/com/example/demo/controller/finishcontroller/db/commit/education.USER_TABLE.csv", assertionMode = DatabaseAssertionMode.NON_STRICT)
+		public void _P010101_commit() throws Exception {
+			User user = new User();
+			user.setNo(4);
+			user.setName("test4");
+			user.setAge(40);
+			user.setBirthday("1985/01/01");
+			
+			mockMvc.perform(post("/commit").param("commit", "commit").flashAttr("user", user))
+				   .andDo(print(fileWriter))
+				   .andExpect(status().isOk())
+				   .andExpect(view().name("user/register/finish"));
+		}
 	}
 	
-	@Test
-	@DisplayName("P020101_POST_commit-back_正常_form画面にリダイレクトしUserオブジェクトをViewに渡す")
-	@DatabaseSetup(value = "/com/example/demo/controller/finishcontroller/db/setup/")
-	public void POST_commit_正常_form画面にリダイレクトしUserオブジェクトをViewに渡す() throws Exception {
-		User user = new User();
-		user.setNo(4);
-		user.setName("test4");
-		user.setAge(40);
-		user.setBirthday("1985/01/01");
+	@Nested
+	@Order(2)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
+	@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
+	class _P0201_back {
 		
-		UserAddress ua = new UserAddress();
-		ua.setPrefecture("北海道");
-		ua.setCity("函館市");
-		ua.setAddressLine(Arrays.asList("33","4","6"));
-		user.setUserAddress(ua);
-		
-		MvcResult mvcResult = mockMvc.perform(post("/commit").param("back", "back").flashAttr("user", user))
-									 .andDo(print(fileWriter))
-									 .andExpect(status().isFound())			// ステータス302が返ることを確認
-									 .andExpect(redirectedUrl("/form"))	// リダイレクト先のURL
-									 .andReturn();							// リクエストの結果を取得
-		
-		FlashMap flashMap = mvcResult.getFlashMap(); // 引き継ぎパラメータを取得
-		User actual = (User) flashMap.get("user");
-		
-		assertThat(actual.getName()).isEqualTo("test4");
+		@Test
+		@DisplayName("正常_form画面にリダイレクトしUserオブジェクトをViewに渡す")
+		@DatabaseSetup(value = "/com/example/demo/controller/finishcontroller/db/setup/")
+		public void _P020101_back() throws Exception {
+			User user = new User();
+			user.setNo(4);
+			user.setName("test4");
+			user.setAge(40);
+			user.setBirthday("1985/01/01");
 			
+			UserAddress ua = new UserAddress();
+			ua.setPrefecture("北海道");
+			ua.setCity("函館市");
+			ua.setAddressLine(Arrays.asList("33","4","6"));
+			user.setUserAddress(ua);
+			
+			MvcResult mvcResult = mockMvc.perform(post("/commit").param("back", "back").flashAttr("user", user))
+										 .andDo(print(fileWriter))
+										 .andExpect(status().isFound())			// ステータス302が返ることを確認
+										 .andExpect(redirectedUrl("/form"))	// リダイレクト先のURL
+										 .andReturn();							// リクエストの結果を取得
+			
+			FlashMap flashMap = mvcResult.getFlashMap(); // 引き継ぎパラメータを取得
+			User actual = (User) flashMap.get("user");
+			
+			assertThat(actual.getName()).isEqualTo("test4");
+		}
 	}
+	
+
 	
 }

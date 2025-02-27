@@ -28,7 +28,7 @@ public class AddressRepositoryTest extends BaseRepositoryTest{
 	
 	@Nested
 	@Order(1)
-	@TestMethodOrder(MethodOrderer.DisplayName.class)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
 	@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
 	class _R0101_findByPrefectureName {
 		

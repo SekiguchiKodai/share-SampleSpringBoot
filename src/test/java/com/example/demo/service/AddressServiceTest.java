@@ -32,7 +32,7 @@ public class AddressServiceTest extends BaseServiceTest {
 	
 	@Nested
 	@Order(1)
-	@TestMethodOrder(MethodOrderer.DisplayName.class)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
 	class _0101_findByPrefectureName {
 		
 		@Test

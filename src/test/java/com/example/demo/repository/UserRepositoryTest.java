@@ -33,7 +33,7 @@ public class UserRepositoryTest extends BaseRepositoryTest {
 	
 	@Nested
 	@Order(1)
-	@TestMethodOrder(MethodOrderer.DisplayName.class)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
 	@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
 	public class _R0101_findMaxNo {
 		
@@ -62,7 +62,7 @@ public class UserRepositoryTest extends BaseRepositoryTest {
 	
 	@Nested
 	@Order(2)
-	@TestMethodOrder(MethodOrderer.DisplayName.class)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
 	@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
 	class _R0201_findByNo {
 		
@@ -99,7 +99,7 @@ public class UserRepositoryTest extends BaseRepositoryTest {
 	
 	@Nested
 	@Order(3)
-	@TestMethodOrder(MethodOrderer.DisplayName.class)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
 	@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
 	class _C0101_insert {
 		

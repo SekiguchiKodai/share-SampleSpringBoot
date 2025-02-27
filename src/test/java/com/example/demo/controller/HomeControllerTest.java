@@ -11,6 +11,8 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +29,6 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 
-@TestMethodOrder(MethodOrderer.DisplayName.class)
-@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	TransactionalTestExecutionListener.class,
@@ -42,70 +42,84 @@ public class HomeControllerTest extends BaseControllerTest {
 		super(mockMvc);
 	}
 	
-	@Test
-	@DisplayName("G010101_GET_form_正常_画面がformに遷移")
-	public void GET_form_正常_画面がformに遷移() throws Exception {
-		mockMvc.perform(get("/form"))
-			   .andDo(print(fileWriter))
-			   .andExpect(status().isOk())
-			   .andExpect(view().name("user/register/form"));
+	@Nested
+	@Order(1)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
+	@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
+	class _G0101_readForm {
+		
+		@Test
+		@DisplayName("正常_画面がformに遷移")
+		public void _G010101_readForm() throws Exception {
+			mockMvc.perform(get("/form"))
+				   .andDo(print(fileWriter))
+				   .andExpect(status().isOk())
+				   .andExpect(view().name("user/register/form"));
+		}
+		
+		@Test
+		@DisplayName("正常_UserオブジェクトをViewに渡す")
+		public void _G010102_readForm() throws Exception {
+			mockMvc.perform(get("/form"))
+			 	   .andDo(print(fileWriter))
+				   .andExpect(model().attribute("user", instanceOf(User.class)));
+		}
+		
+		@Test
+		@DisplayName("正常_採番したUser-NoをViewに渡す")
+		@DatabaseSetup("/com/example/demo/controller/homecontroller/db/setup/")
+		public void _G010103_readForm() throws Exception {
+			long expectedNo = 4L;
+			
+			mockMvc.perform(get("/form"))
+				   .andDo(print(fileWriter))
+				   .andExpect(model().attribute("user", hasProperty("no", is(expectedNo))));
+		}
 	}
 	
-	@Test
-	@DisplayName("G010102_GET_form_正常_UserオブジェクトをViewに渡す")
-	public void GET_form_正常_UserオブジェクトをViewに渡す() throws Exception {
-		mockMvc.perform(get("/form"))
-		 	   .andDo(print(fileWriter))
-			   .andExpect(model().attribute("user", instanceOf(User.class)));
-	}
-	
-	@Test
-	@DisplayName("G010103_GET_form_正常_採番したUser-NoをViewに渡す")
-	@DatabaseSetup("/com/example/demo/controller/homecontroller/db/setup/")
-	public void GET_form_正常_採番したmaxUserNumberをViewに渡す() throws Exception {
-		long expectedNo = 4L;
+	@Nested
+	@Order(2)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
+	@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
+	class _P0101_confirm {
 		
-		mockMvc.perform(get("/form"))
-			   .andDo(print(fileWriter))
-			   .andExpect(model().attribute("user", hasProperty("no", is(expectedNo))));
-	}
-	
-	@Test
-	@DisplayName("P010101_POST_form_正常_画面がconfirmに遷移")
-	@DatabaseSetup("/com/example/demo/controller/homecontroller/db/setup/")
-	public void POST_form_正常_画面がconfirmに遷移() throws Exception {
-		User user = new User();
-		user.setNo(4);
-		user.setName("test-user");
-		user.setAge(10);
-		user.setBirthday("2015/01/01"); 
+		@Test
+		@DisplayName("正常_画面がconfirmに遷移")
+		@DatabaseSetup("/com/example/demo/controller/homecontroller/db/setup/")
+		public void _P010101_confirm() throws Exception {
+			User user = new User();
+			user.setNo(4);
+			user.setName("test-user");
+			user.setAge(10);
+			user.setBirthday("2015/01/01"); 
+			
+			UserAddress ua = new UserAddress();
+			ua.setPrefecture("北海道");
+			ua.setCity("函館市");
+			ua.setAddressLine(Arrays.asList("33","4","6"));
+			user.setUserAddress(ua);
+			
+			// flashAttr() Postメソッドのリクエストパラメータにオブジェクトを渡す場合
+			mockMvc.perform(post("/form").flashAttr("user", user))
+				   .andDo(print(fileWriter))
+				   .andExpect(status().isOk())
+				   .andExpect(view().name("user/register/confirm"));
+		}
 		
-		UserAddress ua = new UserAddress();
-		ua.setPrefecture("北海道");
-		ua.setCity("函館市");
-		ua.setAddressLine(Arrays.asList("33","4","6"));
-		user.setUserAddress(ua);
-		
-		// flashAttr() Postメソッドのリクエストパラメータにオブジェクトを渡す場合
-		mockMvc.perform(post("/form").flashAttr("user", user))
-			   .andDo(print(fileWriter))
-			   .andExpect(status().isOk())
-			   .andExpect(view().name("user/register/confirm"));
-	}
-	
-	@Test
-	@DisplayName("P010102_POST_form_正常_フォーム年齢欄の入力値が0未満の場合画面がirregularに遷移")
-	@DatabaseSetup("/com/example/demo/controller/homecontroller/db/setup/")
-	public void POST_form_正常_フォーム年齢欄の入力値が0未満の場合画面がirregularに遷移() throws Exception {
-		User user = new User();
-		user.setNo(4);
-		user.setName("test-user");
-		user.setAge(-1);
-		user.setBirthday("2015/01/01");
-		
-		mockMvc.perform(post("/form").flashAttr("user", user))
-			   .andDo(print(fileWriter))
-			   .andExpect(status().isOk())
-			   .andExpect(view().name("user/register/irregular"));;
+		@Test
+		@DisplayName("正常_フォーム年齢欄の入力値が0未満の場合画面がirregularに遷移")
+		@DatabaseSetup("/com/example/demo/controller/homecontroller/db/setup/")
+		public void _P010102_confirm() throws Exception {
+			User user = new User();
+			user.setNo(4);
+			user.setName("test-user");
+			user.setAge(-1);
+			user.setBirthday("2015/01/01");
+			
+			mockMvc.perform(post("/form").flashAttr("user", user))
+				   .andDo(print(fileWriter))
+				   .andExpect(status().isOk())
+				   .andExpect(view().name("user/register/irregular"));;
+		}
 	}
 }

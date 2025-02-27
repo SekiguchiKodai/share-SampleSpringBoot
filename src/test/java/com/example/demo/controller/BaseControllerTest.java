@@ -10,9 +10,9 @@ import java.util.Objects;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.ClassOrderer;
+import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.demo.SampleSpringBootApplication;
 
-@TestMethodOrder(MethodOrderer.DisplayName.class)
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
 @AutoConfigureMockMvc
 @SpringBootTest(classes = SampleSpringBootApplication.class)
 public abstract class BaseControllerTest {
@@ -53,14 +53,20 @@ public abstract class BaseControllerTest {
 			@Value("${test.resources.path.controller}") String middlePath,
 			TestInfo info) throws IOException {
 		
+		// パス src/test/resources/{package}
+		Path packageDirPath = Path.of("").toAbsolutePath().resolve(Path.of(commonPath, middlePath));
+		if (Files.notExists(packageDirPath)) {
+			Files.createDirectory(packageDirPath);
+		}
+		// パス src/test/resources/{package}/{class}
 		String className = info.getTestClass().get().getSimpleName();
 		String lowerTargetClassName = className.replace("Test", "").toLowerCase();
-		resourcesDirPath = Path.of("").toAbsolutePath().resolve(Path.of(commonPath, middlePath, lowerTargetClassName));
 		
+		resourcesDirPath = packageDirPath.resolve(lowerTargetClassName);
 		if (Files.notExists(resourcesDirPath)) {
 			Files.createDirectory(resourcesDirPath);
 		}
-		
+		// パス src/test/resources/{package}/{class}/evidence
 		evidenceDirPath = resourcesDirPath.resolve("evidence");
 		if (Files.notExists(evidenceDirPath)) {
 			Files.createDirectory(evidenceDirPath);
