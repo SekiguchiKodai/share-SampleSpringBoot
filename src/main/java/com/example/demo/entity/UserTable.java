@@ -3,7 +3,6 @@ package com.example.demo.entity;
 import java.sql.Date;
 
 import lombok.Data;
-import lombok.Generated;
 
 /**
  * <h1>[USER_TABLEのエンティティ]</h1><br>
@@ -12,7 +11,6 @@ import lombok.Generated;
  */
 
 @Data
-@Generated
 public class UserTable {
 	/** 番号 */
 	private long no;
