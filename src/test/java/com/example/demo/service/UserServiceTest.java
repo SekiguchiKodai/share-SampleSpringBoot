@@ -43,7 +43,7 @@ public class UserServiceTest extends BaseServiceTest {
 	
 	@Nested
 	@Order(1)
-	@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
 	class _0101_getNewNo {
 		
 		@Test
@@ -124,6 +124,15 @@ public class UserServiceTest extends BaseServiceTest {
 				fileWriter.write(textBlock);
 			}
 		}
+		
+
+	}
+	
+	@Nested
+	@Order(3)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
+	@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
+	class _0202_register{
 		
 		@Test
 		@DisplayName("異常_ユーザ情報取得時にDataAccessExceptionが発生")
@@ -239,7 +248,5 @@ public class UserServiceTest extends BaseServiceTest {
 				fileWriter.write(textBlock);
 			}
 		}
-		
 	}
-	
 }

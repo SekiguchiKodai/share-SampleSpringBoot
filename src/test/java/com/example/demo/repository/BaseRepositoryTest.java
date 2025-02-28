@@ -21,12 +21,9 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.SampleSpringBootApplication;
-import com.example.demo.test.dbunit.CsvDataSetLoader;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
-@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	TransactionalTestExecutionListener.class,
@@ -57,14 +54,20 @@ public class BaseRepositoryTest {
 			@Value("${test.resources.path.repository}") String middlePath,
 			TestInfo info) throws IOException {
 		
+		// パス src/test/resources/{package}
+		Path packageDirPath = Path.of("").toAbsolutePath().resolve(Path.of(commonPath, middlePath));
+		if (Files.notExists(packageDirPath)) {
+			Files.createDirectory(packageDirPath);
+		}
+		// パス src/test/resources/{package}/{class}
 		String className = info.getTestClass().get().getSimpleName();
 		String lowerTargetClassName = className.replace("Test", "").toLowerCase();
-		resourcesDirPath = Path.of("").toAbsolutePath().resolve(Path.of(commonPath, middlePath, lowerTargetClassName));
 		
+		resourcesDirPath = packageDirPath.resolve(lowerTargetClassName);
 		if (Files.notExists(resourcesDirPath)) {
 			Files.createDirectory(resourcesDirPath);
 		}
-		
+		// パス src/test/resources/{package}/{class}/evidence
 		evidenceDirPath = resourcesDirPath.resolve("evidence");
 		if (Files.notExists(evidenceDirPath)) {
 			Files.createDirectory(evidenceDirPath);
@@ -86,7 +89,7 @@ public class BaseRepositoryTest {
 		}
 		
 		// エビデンスファイルの初期化
-		String methodName = info.getTestMethod().get().getName();
+		String methodName = info.getTestMethod().get().getName().replaceAll("^_", "");
 		String fileName   = methodName + "_" + info.getDisplayName() + "_result.txt";
 		Path outFilePath = outDirPath.resolve(fileName);
 		fileWriter = Files.newBufferedWriter(outFilePath, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);

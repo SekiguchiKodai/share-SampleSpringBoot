@@ -32,7 +32,7 @@ public class ExceptionControllerTest extends BaseControllerTest {
 	
 	@Nested
 	@Order(1)
-	@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
 	class _0101_handleDatabaseRegisterUserException {
 		
 		@Test
@@ -50,7 +50,7 @@ public class ExceptionControllerTest extends BaseControllerTest {
 	
 	@Nested
 	@Order(2)
-	@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+	@TestMethodOrder(MethodOrderer.MethodName.class)
 	class _0201_handleException {
 		
 		@Test

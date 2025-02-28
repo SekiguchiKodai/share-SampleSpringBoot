@@ -10,9 +10,9 @@ import java.util.Objects;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.ClassOrderer;
+import org.junit.jupiter.api.TestClassOrder;
 import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestExecutionListeners;
@@ -21,12 +21,9 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.SampleSpringBootApplication;
-import com.example.demo.test.dbunit.CsvDataSetLoader;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 
-@TestMethodOrder(MethodOrderer.DisplayName.class)
-@DbUnitConfiguration(dataSetLoader = CsvDataSetLoader.class)
+@TestClassOrder(ClassOrderer.OrderAnnotation.class)
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	TransactionalTestExecutionListener.class,
@@ -35,10 +32,13 @@ import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 @Transactional	//Test実施後、ロールバックしてDBの汚染を防ぐ
 //SpringBootTest.WebEnvironment.NONE Webサーバを起動せずテストを実施する
 @SpringBootTest(classes = SampleSpringBootApplication.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public abstract class AbstractMapperTest {
+public abstract class BaseMapperTest {
 	
 	/** テスト用リソースのパス */
-	protected static Path resourcesPath;
+	protected static Path resourcesDirPath;
+	
+	/** テストエビデンスのパス */
+	protected static Path evidenceDirPath;
 	
 	/** テスト結果出力用ストリーム */
 	protected BufferedWriter fileWriter;
@@ -47,16 +47,32 @@ public abstract class AbstractMapperTest {
 	 * テストリソースが存在するディレクトリまでのパスを取得
 	 * @param commonPath 共通パス
 	 * @param middlePath 共通パスから後ろのパス
+	 * @throws IOException 
 	 */
 	@BeforeAll
 	public static void beforeAll(
 			@Value("${test.resources.path.common}") String commonPath,
 			@Value("${test.resources.path.mapper}") String middlePath,
-			TestInfo info) {
+			TestInfo info) throws IOException {
 		
+		// パス src/test/resources/{package}
+		Path packageDirPath = Path.of("").toAbsolutePath().resolve(Path.of(commonPath, middlePath));
+		if (Files.notExists(packageDirPath)) {
+			Files.createDirectory(packageDirPath);
+		}
+		// パス src/test/resources/{package}/{class}
 		String className = info.getTestClass().get().getSimpleName();
 		String lowerTargetClassName = className.replace("Test", "").toLowerCase();
-		resourcesPath = Path.of("").toAbsolutePath().resolve(Path.of(commonPath, middlePath, lowerTargetClassName));
+		
+		resourcesDirPath = packageDirPath.resolve(lowerTargetClassName);
+		if (Files.notExists(resourcesDirPath)) {
+			Files.createDirectory(resourcesDirPath);
+		}
+		// パス src/test/resources/{package}/{class}/evidence
+		evidenceDirPath = resourcesDirPath.resolve("evidence");
+		if (Files.notExists(evidenceDirPath)) {
+			Files.createDirectory(evidenceDirPath);
+		}
 	}
 	
 	/**
@@ -66,13 +82,18 @@ public abstract class AbstractMapperTest {
 	 */
 	@BeforeEach
 	public void beforeEach(TestInfo info) throws IOException {
-		Path outDirPath = resourcesPath.resolve(Path.of(info.getDisplayName())); 
-		Path outFullPath = outDirPath.resolve(Path.of(info.getDisplayName()+"_result.txt"));
-		// テスト単位でディレクトリ作成
+		// テスト対象のクラスのメソッド毎にディレクトリを用意
+		String nestedClassName   = info.getTestClass().get().getSimpleName().replaceAll("^_", "");
+		Path outDirPath = evidenceDirPath.resolve(nestedClassName);
 		if (Files.notExists(outDirPath)) {
 			Files.createDirectory(outDirPath);
 		}
-		fileWriter = Files.newBufferedWriter(outFullPath, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+		
+		// エビデンスファイルの初期化
+		String methodName = info.getTestMethod().get().getName().replaceAll("^_", "");
+		String fileName   = methodName + "_" + info.getDisplayName() + "_result.txt";
+		Path outFilePath = outDirPath.resolve(fileName);
+		fileWriter = Files.newBufferedWriter(outFilePath, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 	}
 	
 	/**
