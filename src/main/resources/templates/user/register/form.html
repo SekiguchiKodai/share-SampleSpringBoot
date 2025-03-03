@@ -11,7 +11,7 @@
 </head>
 <body>
 	<!-- コンテキストパスの取得 -->
-    <span th:href="@{/}" id="contextPath" style="display: none;"></span>
+    <!-- <span th:href="@{/}" id="contextPath" style="display: none;"></span> -->
     <div id="container">
         <h1 id="page-header">SpringBoot + MVC + MyBatisのサンプルアプリケーション</h1>
         下の表に、次のページに引き継ぐ情報を入力します。
@@ -70,6 +70,10 @@
        <div id="result"></div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script th:inline="javascript">
+        // アドレスAPIの接続オリジンの取得
+        const addressAPIOrigin = /*[[${addressAPIOrigin}]]*/"";
+    </script>
     <script th:src="@{/js/sample.js}"></script>
 </body>
 </html>
