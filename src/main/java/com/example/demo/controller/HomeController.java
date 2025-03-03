@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,9 +29,16 @@ public class HomeController {
 	 * @return 遷移先
 	 */
 	@GetMapping("/form")
-	private String readForm(@ModelAttribute User user, Model model) {	// htmlで指定した th:object を受け取る
+	private String readForm(
+			@ModelAttribute User user,	// @ModelAttribute modelからUserを探し、存在しなければ作成する
+			@Value("${addressapi.origin}") String addressAPIOrigin,
+			Model model) {
+		
 		int newUserNo = userService.getNewNo();
 		user.setNo(newUserNo);
+		
+		model.addAttribute("addressAPIOrigin", addressAPIOrigin);
+		
 		return "user/register/form";	// templateフォルダを起点に遷移先のファイルを指定(.html省略可)
 	}
 	
