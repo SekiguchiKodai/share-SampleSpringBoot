@@ -1,7 +1,7 @@
 $('#prefecture').on('focusout', function() {
     $('#result').text('通信中...');
     $.ajax({
-        url:addressAPIOrigin + "/cityList",
+        url:addressAPIOrigin + "/address/cityList",
         type:"GET",
         dataType:'json',
         data:{"prefectureName":$('#prefecture').val()},
