@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE logback>
+<configuration>
+<!--	SpringBoot デフォルト設定-->
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+<!--	ログファイル出力-->
+	<appender name="APPLIATION_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		    <fileNamePattern>src/main/resources/log/error-%d{yyyy-MM-dd}.log</fileNamePattern>
+    	  	<maxHistory>10</maxHistory>
+		</rollingPolicy>
+		<encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy/MM/dd HH:mm:ss} %-5level [%thread] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<logger name="warnLogger" level="WARN">
+     	<appender-ref ref="APPLIATION_LOG" />
+    </logger>
+	
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+	</root>
+</configuration>
