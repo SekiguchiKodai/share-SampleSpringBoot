@@ -35,6 +35,9 @@ application-pro.properties
 ### JUnit evidence file  ###
 src/test/resources/**/*_result.txt
 
+### log file ###
+*.log
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
