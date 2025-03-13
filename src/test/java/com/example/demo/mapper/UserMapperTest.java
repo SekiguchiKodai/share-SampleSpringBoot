@@ -41,8 +41,8 @@ public class UserMapperTest extends BaseMapperTest {
 		@DisplayName("正常_ユーザNoの最大値を取得")
 		@DatabaseSetup(value = "/com/example/demo/mapper/usermapper/db/setup/")
 		public void _R010101_findMaxNo() throws IOException {
-			int expected = 3;
-			int actual = 0;
+			long expected = 3L;
+			long actual = 0L;
 			try {
 				actual = userMapper.findMaxNo();
 				assertThat(actual).isEqualTo(expected);
@@ -70,7 +70,7 @@ public class UserMapperTest extends BaseMapperTest {
 		@DatabaseSetup(value = "/com/example/demo/mapper/usermapper/db/setup/")
 		public void _R020101_findByNo() throws ParseException, IOException {
 			UserTable expected = new UserTable();
-			expected.setNo(1);
+			expected.setNo(1L);
 			expected.setName("test1");
 			expected.setAge(10);
 			expected.setBirthday(new Date(new SimpleDateFormat("yyyy/MM/dd").parse("2015/01/01").getTime()));
@@ -78,7 +78,7 @@ public class UserMapperTest extends BaseMapperTest {
 			UserTable actual = null;
 			
 			try {
-				actual = userMapper.findByNo(1);
+				actual = userMapper.findByNo(1L);
 				assertThat(actual).isNotNull();
 				assertThat(actual.getNo()).isEqualTo(expected.getNo());
 				assertThat(actual.getName()).isEqualTo(expected.getName());
@@ -110,7 +110,7 @@ public class UserMapperTest extends BaseMapperTest {
 			UserTable expected = new UserTable();
 			expected.setNo(4L);
 			expected.setName("test4");
-			expected.setAge(40L);
+			expected.setAge(40);
 			expected.setBirthday(new Date(new SimpleDateFormat("yyyy/MM/dd").parse("1985/01/01").getTime()));
 			
 			userMapper.insert(expected);

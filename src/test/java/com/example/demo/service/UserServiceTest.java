@@ -49,11 +49,11 @@ public class UserServiceTest extends BaseServiceTest {
 		@Test
 		@DisplayName("正常_ユーザNoの最大値+1を取得")
 		public void _010101_getNewNo() throws IOException {
-			int expectedNo = 4;
-			int actualNo   = -1;
+			long expectedNo = 4L;
+			long actualNo   = -1L;
 			
 			// Mock UserRepository.findMaxNoの戻り値を設定
-			int returnNo = 3;
+			long returnNo = 3L;
 			doReturn(returnNo).when(spyUserRepository).findMaxNo();
 			
 			try {
@@ -90,7 +90,7 @@ public class UserServiceTest extends BaseServiceTest {
 			UserTable expectedUT = new UserTable();
 			expectedUT.setNo(userNo);
 			expectedUT.setName("test10");
-			expectedUT.setAge(10L);
+			expectedUT.setAge(10);
 			expectedUT.setBirthday(new Date(new SimpleDateFormat("yyyy/MM/dd").parse("2015/01/01").getTime()));
 			
 			// Mock UserRepository.insert と findByNoの戻り値を設定
@@ -100,7 +100,7 @@ public class UserServiceTest extends BaseServiceTest {
 			User newUser = new User();
 			newUser.setNo(userNo);
 			newUser.setName("test10");
-			newUser.setAge(10L);
+			newUser.setAge(10);
 			newUser.setBirthday("2015/01/01");
 			
 			UserTable actualUT = null;
@@ -142,7 +142,7 @@ public class UserServiceTest extends BaseServiceTest {
 			User newUser = new User();
 			newUser.setNo(10L);
 			newUser.setName("test10");
-			newUser.setAge(10L);
+			newUser.setAge(10);
 			newUser.setBirthday("2015/01/01");
 			
 			// Mock UserRepository.findByNo 実行時にDataAccessExceptionを発生
@@ -182,7 +182,7 @@ public class UserServiceTest extends BaseServiceTest {
 			User newUser = new User();
 			newUser.setNo(10L);
 			newUser.setName("test10");
-			newUser.setAge(10L);
+			newUser.setAge(10);
 			newUser.setBirthday("2015/01/01");
 			
 			// Mock UserRepository.findByNo 実行時にDataAccessExceptionを発生
@@ -219,19 +219,19 @@ public class UserServiceTest extends BaseServiceTest {
 		public void _020203_register() throws IOException {
 			doCallRealMethod().when(spyUserRepository).findMaxNo();
 			
-			int expectedNo = spyUserRepository.findMaxNo();
+			long expectedNo = spyUserRepository.findMaxNo();
 			
 			User newUser = new User();
 			newUser.setNo(10L);
 			newUser.setName("test10");
-			newUser.setAge(10L);
+			newUser.setAge(10);
 			newUser.setBirthday("2015/01/01");
 			
 			doCallRealMethod().when(spyUserRepository).insert(any(UserTable.class));
 			// Mock UserRepository.findByNo 実行時にExceptionを発生
 			doThrow(new QueryTimeoutException("message")).when(spyUserRepository).findByNo(anyLong());
 			
-			int actualNo = -1;
+			long actualNo = -1;
 			try {
 				// テスト対象メソッド実行
 				assertThrows(DatabaseRegisterUserException.class, () -> userService.register(newUser));

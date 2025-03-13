@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -40,7 +42,7 @@ public class HomeControllerTest extends BaseControllerTest {
 		public void _G010101_readForm() throws Exception {
 			long expectedNo = 5L;
 			
-			int mockResturnNo = (int) expectedNo;
+			long mockResturnNo = (int) expectedNo;
 			doReturn(mockResturnNo).when(mockUserService).getNewNo();
 			
 			mockMvc.perform(get("/form"))
@@ -56,13 +58,14 @@ public class HomeControllerTest extends BaseControllerTest {
 	@TestMethodOrder(MethodOrderer.MethodName.class)
 	class _P0101_confirm {
 		
-		@Test
 		@DisplayName("正常_ユーザ情報をViewが受け取り画面がconfirmに遷移")
-		public void _P010101_confirm() throws Exception {
+		@ParameterizedTest
+		@ValueSource(ints = {0, 1})
+		public void _P010101_confirm(int age) throws Exception {
 			User user = new User();
 			user.setNo(4L);
 			user.setName("test-user");
-			user.setAge(10L);
+			user.setAge(age);
 			user.setBirthday("2015/01/01");
 			
 			// flashAttr() Postメソッドのリクエストパラメータにオブジェクトを渡す場合
@@ -73,13 +76,14 @@ public class HomeControllerTest extends BaseControllerTest {
 				   .andExpect(model().attribute("user", sameInstance(user)));
 		}
 		
-		@Test
 		@DisplayName("正常_フォーム年齢欄の入力値が0未満の場合画面がirregularに遷移")
-		public void _P010102_confirm() throws Exception {
+		@ParameterizedTest
+		@ValueSource(ints = {-1, -100})
+		public void _P010102_confirm(int age) throws Exception {
 			User user = new User();
 			user.setNo(4L);
 			user.setName("test-user");
-			user.setAge(-1L);
+			user.setAge(age);
 			user.setBirthday("2015/01/01");
 			
 			mockMvc.perform(post("/form").flashAttr("user", user))

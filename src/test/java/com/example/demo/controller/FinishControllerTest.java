@@ -39,7 +39,8 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 //@Transactional
 public class FinishControllerTest extends BaseControllerTest {
 	
-	private long initNo, initAge;
+	private long initNo;
+	private int initAge;
 	private String initName, initBirthday;
 	private User user;
 	
@@ -56,7 +57,7 @@ public class FinishControllerTest extends BaseControllerTest {
 	public void initUser() {
 		initNo = 5L;
 		initName = "test5";
-		initAge = 50L;
+		initAge = 50;
 		initBirthday = "1975/01/01";
 		
 		user = new User();

@@ -22,9 +22,9 @@ public class UserService {
 		this.userRepository  = userRepository;
 	}
 	
-	public int getNewNo() {
-		int maxNo = userRepository.findMaxNo();
-		return maxNo + 1;
+	public long getNewNo() {
+		long maxNo = userRepository.findMaxNo();
+		return maxNo + 1L;
 	}
 	
 	@Transactional

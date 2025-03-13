@@ -41,8 +41,8 @@ public class UserRepositoryTest extends BaseRepositoryTest {
 		@DisplayName("正常_テーブル内でユーザNoの最大値を取得")
 		@DatabaseSetup(value = "/com/example/demo/repository/userrepository/db/setup/")
 		public void _R010101_findMaxNo() throws IOException {
-			int expectedNo = 3;
-			int actualNo   = -1;
+			long expectedNo = 3L;
+			long actualNo   = -1L;
 			
 			try {
 				actualNo = userRepository.findMaxNo();
@@ -73,7 +73,7 @@ public class UserRepositoryTest extends BaseRepositoryTest {
 			UserTable expected = new UserTable();
 			expected.setNo(1L);
 			expected.setName("test1");
-			expected.setAge(10L);
+			expected.setAge(10);
 			expected.setBirthday(new Date(new SimpleDateFormat("yyyy/MM/dd").parse("2015/01/01").getTime()));
 			
 			UserTable actual = null;
@@ -111,7 +111,7 @@ public class UserRepositoryTest extends BaseRepositoryTest {
 			UserTable newUser = new UserTable();
 			newUser.setNo(4L);
 			newUser.setName("test4");
-			newUser.setAge(40L);
+			newUser.setAge(40);
 			newUser.setBirthday(new Date(new SimpleDateFormat("yyyy/MM/dd").parse("1985/01/01").getTime()));
 			
 			userRepository.insert(newUser);

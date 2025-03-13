@@ -19,7 +19,7 @@ public class UserTable {
 	private String name;
 
 	/** 年齢 */
-	private long age;
+	private int age;
 	
 	/** 誕生日 */
 	private Date birthday;

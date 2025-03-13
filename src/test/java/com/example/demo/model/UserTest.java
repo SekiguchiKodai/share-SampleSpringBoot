@@ -21,7 +21,7 @@ public class UserTest extends BaseModelTest {
 	/** 氏名 */
 	private String initName;
 	/** 年齢 */
-	private long initAge;
+	private int initAge;
 	/** 誕生日 */
 	private String initBirthday;
 	/** 住所 */
@@ -35,7 +35,7 @@ public class UserTest extends BaseModelTest {
 	public void initUser() throws ParseException {
 		initNo			= 10L;
 		initName		= "テストユーザ";
-		initAge			= 30L;
+		initAge			= 30;
 		initBirthday	= "1995/01/01";
 		initUserAddress.setPrefecture("千葉県");
 		initUserAddress.setCity("千葉市");
@@ -62,7 +62,7 @@ public class UserTest extends BaseModelTest {
 		public void _010101_getter_and_setter() throws ParseException, IOException {
 			long		expectedNo		 = 10L;
 			String		expectedName	 = "テストユーザ";
-			long		expectedAge		 = 30L;
+			int			expectedAge		 = 30;
 			String		expectedBirthday = "1995/01/01";
 			UserAddress expectedAddress  = initUserAddress;
 			String		expectedErrMsg 	 = "exception message";
@@ -149,7 +149,7 @@ public class UserTest extends BaseModelTest {
 			User notSameAge = new User();
 			notSameAge.setNo(initNo);
 			notSameAge.setName(initName);
-			notSameAge.setAge(initAge + 1L);
+			notSameAge.setAge(initAge + 1);
 			notSameAge.setBirthday(initBirthday);
 			notSameAge.setUserAddress(initUserAddress);
 			notSameAge.setErrMsg(initErrMsg);

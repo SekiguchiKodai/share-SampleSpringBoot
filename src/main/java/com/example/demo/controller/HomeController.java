@@ -34,7 +34,7 @@ public class HomeController {
 			@Value("${addressapi.origin}") String addressAPIOrigin,
 			Model model) {
 		
-		int newUserNo = userService.getNewNo();
+		long newUserNo = userService.getNewNo();
 		user.setNo(newUserNo);
 		
 		model.addAttribute("addressAPIOrigin", addressAPIOrigin);
