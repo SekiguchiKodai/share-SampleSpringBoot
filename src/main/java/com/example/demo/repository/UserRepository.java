@@ -4,7 +4,7 @@ import com.example.demo.entity.UserTable;
 
 public interface UserRepository {
 
-	public int findMaxNo();
+	public long findMaxNo();
 	
 	public UserTable findByNo(Long no);
 	

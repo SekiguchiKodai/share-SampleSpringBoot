@@ -19,7 +19,7 @@ public class User extends ViewCommonData {
 	private String name;
 	
 	/** 年齢 */
-	private long age;
+	private int age;
 	
 	/** 誕生日 */
 	private String birthday;

@@ -21,7 +21,7 @@
 	<!-- SQL定義 -->
 	
 	<!-- id=Mapperクラスのメソッド名 resultType=戻り値の型 -->
-	<select id="findMaxNo" resultType="int">
+	<select id="findMaxNo" resultType="long">
 		SELECT
 			COALESCE(MAX(NO), 0)
 		FROM

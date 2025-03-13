@@ -16,7 +16,7 @@ public interface UserMapper {
 	 * find max user no
 	 * @return
 	 */
-	public int findMaxNo();
+	public long findMaxNo();
 	
 	/**
 	 * find one user

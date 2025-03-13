@@ -20,7 +20,7 @@ public class ImpUserRepository implements UserRepository {
 		return userMapper.findByNo(no);
 	}
 	
-	public int findMaxNo() {
+	public long findMaxNo() {
 		return userMapper.findMaxNo();
 	}
 	
